@@ -186,5 +186,52 @@ Road-Accident-Data-Analysis/
 * Dataset inspected and confirmed (50,008 records, 20 columns).
 * Software Requirements Specification (SRS) completed.
 * Next Phase: Data cleaning execution, exploratory analysis, SQL query implementation, Power BI dashboard design, and final report synthesis.
-* 
+
+  # Phase 2: Data Processing and Cleaning
+
+## Overview
+This part provides a comprehensive summary of all data cleaning, preprocessing, and validation activities performed during **Phase 2** of the Road Accident Data Analysis project. All operations were executed on a separate working copy (`df_Cleaned`) to preserve the integrity of the original dataset (which contains **50,008 records** and **20 columns**).
+
+---
+
+## Summary of Data Cleaning Operations
+
+### 1. Missing Value Analysis & Handling
+Missing values were identified across three columns and handled using targeted imputation strategies:
+* **`Accident_Severity`** (2 missing values): Imputed using the statistical mode.
+* **`Urban_or_Rural_Area`** (2 missing values): Imputed using the statistical mode.
+* **`Carriageway_Hazards`** (49,320 missing values): Filled with the category `'Unknown / Not Reported'` to retain valid records without making unsupported assumptions.
+
+### 2. Duplicate Record Removal
+* Identified **8 duplicate records** based on the `Accident_Index` column.
+* Confirmed that duplicate IDs contained matching information (zero conflicting records found).
+* Retained the first occurrence and removed the duplicate rows, bringing the total record count from **50,008 down to 50,000**.
+
+### 3. Data Type Verification & Conversion
+* Inspected all 20 columns to ensure appropriate data typing (datetime, integers, floats, and strings).
+* Converted the **`Accident Date`** column to a standard datetime format using Pandas (`pd.to_datetime`) with zero unparseable or null dates resulting from the conversion.
+
+### 4. Text Standardisation & Inconsistent Value Correction
+* Stripped unwanted leading and trailing whitespace from all categorical text columns.
+* Corrected specific data-entry errors and inconsistencies:
+  * Replaced `'Mina'` with `'Minor'` in `Accident_Severity`.
+  * Replaced `'Auto traffic sigl'` with `'Auto traffic signal'` in `Junction_Control`.
+  * Replaced misplaced weather descriptions (e.g., `'Fine no high winds'`) with `'Unknown / Not Reported'` under `Road_Type`.
+
+### 5. Numerical Data Validation
+* Validated numerical columns (`Number_of_Casualties`, `Number_of_Vehicles`, and `Speed_limit`) for logical consistency:
+  * Confirmed **zero** negative values across all numerical fields.
+  * Confirmed **zero** zero-values for casualty and vehicle counts (all accidents recorded at least 1 casualty and 1 vehicle).
+
+### 6. Outlier Detection (IQR Method)
+The Interquartile Range (IQR) method was utilized to flag potential statistical outliers for future analysis rather than immediate deletion:
+* **`Number_of_Casualties`**: 1,695 potential outliers flagged (Limits: -0.5 to 3.5)
+* **`Number_of_Vehicles`**: 1,054 potential outliers flagged (Limits: -0.5 to 3.5)
+* **`Speed_limit`**: 7,854 potential outliers flagged (Limits: 15.0 to 55.0)
+
+---
+
+## Conclusion
+Phase 2 successfully transformed the raw road accident dataset into a clean, structured, and consistent format comprising **50,000 validated records**. The dataset is now fully optimized and ready to support reliable Exploratory Data Analysis (EDA) into accident severity patterns, environmental influences, and road safety factors.
+
 
